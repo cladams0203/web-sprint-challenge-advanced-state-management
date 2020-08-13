@@ -1,23 +1,20 @@
 import React from 'react'
 import Smurf from './Smurf'
-import { connect } from 'react-redux'
+import { useRecoilValue } from 'recoil'
+import { smurfState } from '../recoil/atoms'
 
-function SmurfList(props) {
-
+function SmurfList() {
+    const { smurfs } = useRecoilValue(smurfState)
     return (
         <>
             <div className='smurf-container' >
-                {props.smurfs.map(item => {
+                {smurfs.map(item => {
                     return <Smurf key={item.id} smurf={item} />
                 })}
             </div>
         </>
     )
 }
-const mapStateToProps = (state) => {
-    return {
-        smurfs: state.smurfs
-    }
-}
 
-export default connect(mapStateToProps, {})(SmurfList)
+
+export default SmurfList

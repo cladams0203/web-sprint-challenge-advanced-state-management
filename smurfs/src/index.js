@@ -2,16 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
-import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import logger from 'redux-logger'
-import { smurfReducer } from './store/reducer/smurfReducer'
+import { RecoilRoot } from 'recoil'
 
-const store = createStore(smurfReducer, applyMiddleware(thunk, logger))
+
 
 ReactDOM.render(
-    <Provider store={store}>
+    <RecoilRoot>
         <App />
-    </Provider>
+    </RecoilRoot>
     , document.getElementById("root"));

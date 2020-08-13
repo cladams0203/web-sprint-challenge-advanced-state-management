@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { addSmurf } from '../store/actions/smurfActions'
+import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { smurfState } from '../recoil/atoms'
 
 function Form(props) {
+  const [state, setState] = useRecoilState(smurfState)
   const [form, setForm] = useState({
     name: '',
     age: '',
@@ -16,7 +18,10 @@ function Form(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addSmurf(form)
+    setState({ ...state, loading: true })
+    axios.post('http://localhost:3333/smurfs', form)
+      .then(res => setState({ ...state, loading: false, smurfs: res.data }))
+      .catch(err => setState({ ...state, loading: false, error: err.message }))
 
   }
 
@@ -40,4 +45,4 @@ function Form(props) {
   )
 }
 
-export default connect(null, { addSmurf })(Form)
+export default Form
