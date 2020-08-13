@@ -1,10 +1,10 @@
 import React from 'react'
 import Smurf from './Smurf'
-import { useRecoilValue } from 'recoil'
-import { smurfState } from '../recoil/atoms'
+import { useStateValue } from 'react-conflux'
+import { smurfContext } from '../store/contexts/smurfContext'
 
 function SmurfList() {
-    const { smurfs } = useRecoilValue(smurfState)
+    const [{ smurfs }] = useStateValue(smurfContext)
     return (
         <>
             <div className='smurf-container' >

@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { StateProvider } from 'react-conflux'
+import { smurfReducer } from './store/reducer/smurfReducer'
+import { smurfContext } from './store/contexts/smurfContext'
 import "./index.css";
 import App from "./components/App";
-import { RecoilRoot } from 'recoil'
+
 
 
 
 ReactDOM.render(
-    <RecoilRoot>
+    <StateProvider reducer={smurfReducer} stateContext={smurfContext}>
         <App />
-    </RecoilRoot>
+    </StateProvider>
     , document.getElementById("root"));

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
-import { smurfState } from '../recoil/atoms'
+import { useStateValue } from 'react-conflux'
+import { smurfContext } from '../store/contexts/smurfContext'
+import { FETCH_SMURF_START, FETCH_SMURF_SUCCESS, FETCH_SMURF_FAIL } from '../store/actions/smurfActions'
 
 function Form(props) {
-  const [state, setState] = useRecoilState(smurfState)
+  const [state, dispatch] = useStateValue(smurfContext)
   const [form, setForm] = useState({
     name: '',
     age: '',
@@ -18,10 +19,10 @@ function Form(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setState({ ...state, loading: true })
+    dispatch({ type: FETCH_SMURF_START })
     axios.post('http://localhost:3333/smurfs', form)
-      .then(res => setState({ ...state, loading: false, smurfs: res.data }))
-      .catch(err => setState({ ...state, loading: false, error: err.message }))
+      .then(res => dispatch({ type: FETCH_SMURF_SUCCESS, payload: res.data }))
+      .catch(err => dispatch({ type: FETCH_SMURF_FAIL, payload: err.message }))
 
   }
 

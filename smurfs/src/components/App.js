@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
-import { smurfState } from '../recoil/atoms'
+import { useStateValue } from 'react-conflux'
+import { smurfContext } from '../store/contexts/smurfContext'
+import { FETCH_SMURF_START, FETCH_SMURF_SUCCESS, FETCH_SMURF_FAIL } from '../store/actions/smurfActions'
 import SmurfList from './SmurfList'
 import Form from './Form'
 import "./App.css";
 
 
 function App() {
-  const [state, setState] = useRecoilState(smurfState)
+
+  const [state, dispatch] = useStateValue(smurfContext)
   console.log(state)
   useEffect(() => {
-    setState({ ...state, loading: true })
+    dispatch({ type: FETCH_SMURF_START })
     axios.get('http://localhost:3333/smurfs')
-      .then(res => setState({ ...state, loading: false, smurfs: res.data }))
-      .catch(err => setState({ ...state, loading: false, error: err.message }))
+      .then(res => dispatch({ type: FETCH_SMURF_SUCCESS, payload: res.data }))
+      .catch(err => dispatch({ type: FETCH_SMURF_FAIL, payload: err.massage }))
   }, [])
 
   return (
