@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { addSmurf } from '../store/actions/smurfActions'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { FETCH_SMURF_START, FETCH_SMURF_SUCCESS, FETCH_SMURF_FAIL } from '../store/actions/smurfActions'
 
-function Form(props) {
+
+function Form() {
+  const dispatch = useDispatch()
   const [form, setForm] = useState({
     name: '',
     age: '',
@@ -16,7 +19,14 @@ function Form(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addSmurf(form)
+    dispatch({ type: FETCH_SMURF_START })
+    axios.post('http://localhost:3333/smurfs', form)
+      .then(res => {
+        dispatch({ type: FETCH_SMURF_SUCCESS, payload: res.data })
+      })
+      .catch(err => {
+        dispatch({ type: FETCH_SMURF_FAIL, payload: err.message })
+      })
 
   }
 
@@ -40,4 +50,4 @@ function Form(props) {
   )
 }
 
-export default connect(null, { addSmurf })(Form)
+export default Form
