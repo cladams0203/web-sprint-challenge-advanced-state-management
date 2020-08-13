@@ -6,7 +6,7 @@ function SmurfList(props) {
 
     return (
         <>
-            <div>
+            <div className='smurf-container' >
                 {props.smurfs.map(item => {
                     return <Smurf key={item.id} smurf={item} />
                 })}
